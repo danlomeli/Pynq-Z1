@@ -1,0 +1,7 @@
+serverip=192.168.15.101
+bootfile=uImage
+rootpath=/home/daniel/playground/build_zynq_target/make_rootfs_part/rootfs
+adi_sdboot=echo Copying Device Tree from SD to RAM... && fatload mmc 0 0x2A00000 ${devicetree_image};
+start=echo Starting Kernel from RAM... && if fatload mmc 0 0x2000000 ${ramdisk_image}; then bootm 0x3000000 0x2000000 0x2A00000; else bootm 0x3000000 - 0x2A00000; fi
+uenvcmd=echo "Running TFTP Boot"; dhcp 0x3000000 ${serverip}:${bootfile}; run adi_sdboot; run start;
+bootargs=console=ttyPS0,115200 ip=192.168.15.102:192.168.15.1:192.168.15.1:255.255.255.0 root=/dev/nfs nfsroot=192.168.15.101:/home/daniel/playground/build_zynq_target/make_rootfs_part/rootfs,tcp,v4 rw earlyprintk
